@@ -21,12 +21,12 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class Carousel extends Vue {
   @Prop({ default: 1 }) readonly perSlide!: number;
 
-  private num: Array<any> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  private cloneNum: Array<any> = [...this.num];
+  private num: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  private cloneNum: Array<number> = [...this.num];
 
-  private isMobile: boolean = false;
+  private isMobile = false;
 
-  private startPoint: number = 0;
+  private startPoint = 0;
   private endPoint: number = this.responsivePerSlide;
 
   public prev(): void {
@@ -68,18 +68,18 @@ export default class Carousel extends Vue {
     return this.isMobile ? 1 : this.perSlide;
   }
 
-   public handleResize(): void {
+  public handleResize(): void {
     this.isMobile = window.innerWidth <= 767;
     this.endPoint = this.isMobile ? this.startPoint : this.responsivePerSlide;
   }
 
   mounted() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
     this.handleResize();
   }
 
   destroyed() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 }
 </script>
