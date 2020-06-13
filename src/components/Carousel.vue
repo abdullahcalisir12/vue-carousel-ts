@@ -70,7 +70,7 @@ export default class Carousel extends Vue {
 
   public handleResize(): void {
     this.isMobile = window.innerWidth <= 767;
-    this.endPoint = this.isMobile ? this.startPoint : this.responsivePerSlide;
+    this.endPoint = this.isMobile ? this.startPoint : this.startPoint + this.responsivePerSlide;
   }
 
   mounted() {
