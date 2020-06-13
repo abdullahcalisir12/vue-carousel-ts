@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="a-carousel">
+    <div class="a-carousel" :style="{ 'grid-template-columns': `repeat(${isMobile ? 1 : perSlide}, 1fr)` }">
       <div class="a-carousel-item" v-for="n in slides" :key="n">
         <div>
           {{ n }}
@@ -15,11 +15,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class Carousel extends Vue {
-  @Prop({ default: 1 }) readonly perSlide!: number;
+  @Prop({ default: 2 }) readonly perSlide!: number;
 
   private num: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   private cloneNum: Array<number> = [...this.num];
@@ -27,7 +27,7 @@ export default class Carousel extends Vue {
   private isMobile = false;
 
   private startPoint = 0;
-  private endPoint: number = this.responsivePerSlide;
+  private endPoint: number = this.startPoint + this.responsivePerSlide;
 
   public prev(): void {
     this.startPoint -= 1;
@@ -65,7 +65,7 @@ export default class Carousel extends Vue {
   }
 
   get responsivePerSlide(): number {
-    return this.isMobile ? 1 : this.perSlide;
+    return this.isMobile ? 1 : this.perSlide - 1;
   }
 
   public handleResize(): void {
@@ -81,6 +81,11 @@ export default class Carousel extends Vue {
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
   }
+
+  @Watch('perSlide')
+  handler(val: number) {
+    this.endPoint = this.startPoint + this.responsivePerSlide;
+  }
 }
 </script>
 
@@ -88,15 +93,11 @@ export default class Carousel extends Vue {
 .a-carousel {
   width: 100%;
   display: inline-grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(2, 1fr);
   column-gap: 1rem;
   row-gap: 1rem;
   color: white;
   font-size: 32px;
-
-  @media only screen and (max-width: 767px) {
-    grid-template-columns: auto;
-  }
 
   .a-carousel-item {
     display: flex;

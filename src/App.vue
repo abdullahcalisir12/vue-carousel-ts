@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Carousel :perSlide="2" />
+    <Carousel :perSlide="3" />
   </div>
 </template>
 
